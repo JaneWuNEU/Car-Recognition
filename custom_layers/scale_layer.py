@@ -1,4 +1,4 @@
-from keras.layers.core import Layer
+from keras.layers import Layer
 from keras.engine import InputSpec
 from keras import backend as K
 try:

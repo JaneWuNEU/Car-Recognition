@@ -1,6 +1,11 @@
-numpy
-tensorflow-gpu
-keras
-pillow
-sklearn
-console-progressbar
+#numpy
+#tensorflow-gpu
+#keras
+#pillow
+#sklearn
+#console-progressbar
+
+
+tensorflow-cpu==1.14.0
+keras==2.0.8
+matplotlib

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from keras.optimizers import SGD
 from keras.layers import Input, Dense, Conv2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Flatten, Activation, add
 from keras.layers.normalization import BatchNormalization
@@ -11,6 +10,7 @@ from sklearn.metrics import log_loss
 from custom_layers.scale_layer import Scale
 
 import sys
+sys.path.append(".")
 sys.setrecursionlimit(3000)
 
 def identity_block(input_tensor, kernel_size, filters, stage, block):
@@ -149,12 +149,12 @@ def resnet152_model(img_rows, img_cols, color_type=1, num_classes=None):
 
     if K.image_data_format() == 'channels_first':
       # Use pre-trained weights for Theano backend
-      weights_path = 'models/resnet152_weights_th.h5'
+      weights_path = './model/model.96-0.89.hdf5'
     else:
       # Use pre-trained weights for Tensorflow backend
-      weights_path = 'models/resnet152_weights_tf.h5'
+      weights_path = './model/model.96-0.89.hdf5'
 
-    model.load_weights(weights_path, by_name=True)
+    #model.load_weights(weights_path,by_name=True)
 
     # Truncate and replace softmax layer for transfer learning
     # Cannot use model.layers.pop() since model is not of Sequential() type
@@ -171,33 +171,33 @@ def resnet152_model(img_rows, img_cols, color_type=1, num_classes=None):
 
     return model
 
-if __name__ == '__main__':
-
-    # Example to fine-tune on 3000 samples from Cifar10
-
-    img_rows, img_cols = 224, 224 # Resolution of inputs
-    channel = 3
-    num_classes = 10 
-    batch_size = 8
-    epochs = 10
-
-    # Load Cifar10 data. Please implement your own load_data() module for your own dataset
-    X_train, Y_train, X_valid, Y_valid = load_cifar10_data(img_rows, img_cols)
-
-    # Load our model
-    model = resnet152_model(img_rows, img_cols, channel, num_classes)
-
-    # Start Fine-tuning
-    model.fit(X_train, Y_train,
-              batch_size=batch_size,
-              epochs=epochs,
-              shuffle=True,
-              verbose=1,
-              validation_data=(X_valid, Y_valid),
-              )
-
-    # Make predictions
-    predictions_valid = model.predict(X_valid, batch_size=batch_size, verbose=1)
-
-    # Cross-entropy loss score
-    score = log_loss(Y_valid, predictions_valid)
+# if __name__ == '__main__':
+#
+#     # Example to fine-tune on 3000 samples from Cifar10
+#
+#     img_rows, img_cols = 224, 224 # Resolution of inputs
+#     channel = 3
+#     num_classes = 10
+#     batch_size = 8
+#     epochs = 10
+#
+#     # Load Cifar10 data. Please implement your own load_data() module for your own dataset
+#     X_train, Y_train, X_valid, Y_valid = load_cifar10_data(img_rows, img_cols)
+#
+#     # Load our model
+#     model = resnet152_model(img_rows, img_cols, channel, num_classes)
+#
+#     # Start Fine-tuning
+#     model.fit(X_train, Y_train,
+#               batch_size=batch_size,
+#               epochs=epochs,
+#               shuffle=True,
+#               verbose=1,
+#               validation_data=(X_valid, Y_valid),
+#               )
+#
+#     # Make predictions
+#     predictions_valid = model.predict(X_valid, batch_size=batch_size, verbose=1)
+#
+#     # Cross-entropy loss score
+#     score = log_loss(Y_valid, predictions_valid)
